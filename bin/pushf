@@ -1,0 +1,61 @@
+#!/bin/bash
+#??Push fast to git
+#&&git,mshx
+###Usage: pushf <commit message> 
+###when no commit message is specified, a timestamp is used
+###Example: pushf update: added new feature
+
+echo "Pushing-Fast to git..."
+
+args="$*"
+
+commitMessage="$args"
+
+if [ -z "$args" ]
+then
+    commitMessage="update: $(date)"
+fi
+
+if ! command -v git &> /dev/null
+then
+    echo "❌❌❌ Git is not installed!"
+    exit 1
+fi
+
+if [ ! -d ".git" ]
+then
+    echo "❌❌❌ Not a git repository!"
+    exit 1
+fi
+
+if [ -z "$(git status --porcelain)" ]
+then
+    echo "No changes to commit!"
+    exit 0
+fi
+
+git add .
+
+if [ $? -ne 0 ]
+then
+    echo "❌❌❌ Failed to add files to git!"
+    exit 1
+fi
+
+git commit -m "$commitMessage"
+
+if [ $? -ne 0 ]
+then
+    echo "❌❌❌ Failed to commit to git!"
+    exit 1
+fi
+
+git push
+
+if [ $? -ne 0 ]
+then
+    echo "❌❌❌ Failed to push to git!"
+    exit 1
+fi
+
+echo "✅✅✅ Pushed to git!"
