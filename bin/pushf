@@ -2,7 +2,7 @@
 #??Push fast to git
 #&&git,mshx
 ###Usage: pushf <commit message> 
-###when no commit message is specified, a timestamp is used
+###When no commit message is specified, a timestamp is used
 ###Example: pushf update: added new feature
 
 echo "Pushing-Fast to git..."
