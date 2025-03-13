@@ -1,0 +1,8 @@
+#!/bin/bash
+#??Stash your changes temporarily
+#&&git,mshx
+###Usage: stash-tmp 
+
+git stash
+read -p "Press any key to continue..."
+git stash pop
