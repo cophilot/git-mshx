@@ -1,0 +1,25 @@
+#!/bin/bash
+#??Pull all repositories in the current directory
+#&&git,mshx
+###Usage: git-pull-all
+
+for item in *; do
+    if [ -d "$item" ]; then
+        if [ -d "$item/.git" ]; then
+            echo "Found Git repository in: $item"
+            cd "$item"
+
+            git pull
+
+            if [ $? -eq 0 ]; then
+                echo "Successfully pulled changes in: $item"
+            else
+                echo "Error pulling changes in: $item"
+            fi
+            
+            cd ..
+        fi
+    fi
+done
+
+echo "Finished!"

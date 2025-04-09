@@ -1,7 +1,12 @@
 #!/bin/bash
 #??Stash your changes temporarily
 #&&git,mshx
-###Usage: stash-tmp 
+###Usage: git-stash-tmp 
+
+if [ -z "$(git status --porcelain)" ]; then
+    echo "No changes to stash."
+    exit 0
+fi
 
 git stash
 read -p "Press any key to continue..."
