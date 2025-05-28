@@ -1,0 +1,5 @@
+#!/bin/bash
+#??Alias for 'git checkout'
+#&&git,mshx
+
+git checkout $@
