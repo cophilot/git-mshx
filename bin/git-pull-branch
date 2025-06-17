@@ -1,0 +1,35 @@
+#!/bin/bash
+#??Pull a specific branch that is not the current branch
+#&&git,mshx
+###Usage: git-pull-branch <branch_name>
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <branch_name>"
+    exit 1
+fi
+
+BRANCH_NAME=$1
+OG_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+git checkout "$BRANCH_NAME"
+
+if [ $? -ne 0 ]; then
+    echo "Error checking out branch: $BRANCH_NAME"
+    exit 1
+fi
+
+git pull
+
+if [ $? -ne 0 ]; then
+    echo "Error pulling changes in branch: $BRANCH_NAME"
+    git checkout "$OG_BRANCH"
+    exit 1
+fi
+
+echo "Successfully pulled changes in branch: $BRANCH_NAME"
+git checkout "$OG_BRANCH"
+if [ $? -ne 0 ]; then
+    echo "Error checking out back to original branch: $OG_BRANCH"
+    exit 1
+fi
+
