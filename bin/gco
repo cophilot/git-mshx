@@ -1,5 +1,6 @@
 #!/bin/bash
 #??Alias for 'git checkout'
 #&&git,mshx
+###Usage: gco <args>
 
 git checkout $@

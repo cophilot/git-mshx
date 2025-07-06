@@ -1,0 +1,42 @@
+#!/bin/bash
+#??Iterate interactively over the git history of the current repository
+#&&git,mshx
+###Usage: iterate-git-history
+
+if [ ! -d .git ]; then
+  echo "ERROR: This script must be run from the root of a git repository"
+  exit 1
+fi
+
+all_commit_hashes=$(git log --pretty=format:"%H")
+all_commit_hashes=$(echo "$all_commit_hashes" | tac)
+all_commits_count=$(echo "$all_commit_hashes" | wc -l)
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+repo_name=$(basename $(git rev-parse --show-toplevel))
+current_commit_cursor=1
+
+for commit_hash in $all_commit_hashes; do
+    clear
+    echo "Iterating over git repository history: $repo_name"
+    echo ""
+    echo -e "\e[33mCommit $current_commit_cursor of $all_commits_count\e[0m"
+    echo ""
+    echo -e "\e[32mCommit message: $(git show -s --format=%B $commit_hash)\e[0m"
+    echo ""
+    echo "Commit hash: $commit_hash"
+    echo "Date: $(git show -s --format=%ci $commit_hash)"
+    echo "Author: $(git show -s --format=%an $commit_hash)"
+    echo ""
+    echo -e "\e[34mNext commit message: $(git show -s --format=%B $(echo "$all_commit_hashes" | sed -n "$((current_commit_cursor + 1))p"))\e[0m"
+    echo ""
+    git checkout $commit_hash > /dev/null 2>&1
+
+    read -p "Press ENTER for next commit or 'q' to quit: " input
+    if [ "$input" == "q" ]; then
+        break
+    fi
+
+    current_commit_cursor=$((current_commit_cursor + 1))
+done
+
+git checkout $current_branch > /dev/null 2>&1

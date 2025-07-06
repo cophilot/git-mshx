@@ -1,0 +1,23 @@
+#!/bin/bash
+#??Get all changes from all repositories in the current directory recursively
+#&&git,mshx
+###Usage: changes-in-repos
+
+found_changes=false
+
+for repo in $(ls -d */); do
+    cd $repo
+    if [ -n "$(git status --porcelain)" ]; then
+        echo "*** $repo has changes"
+        git status --porcelain
+        echo "**********************************"
+        echo ""
+
+        found_changes=true
+    fi
+    cd ..
+done
+
+if [ "$found_changes" = false ]; then
+    echo "No changes in any repository"
+fi
