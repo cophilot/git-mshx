@@ -1,0 +1,21 @@
+#!/bin/bash
+#??Opens the current git repository in the default web browser
+#&&git,mshx
+###Usage: open-repo-in-browser
+
+if [ ! -d .git ]; then
+  echo "ERROR: This script must be run from the root of a git repository"
+  exit 1
+fi
+
+remote_url=$(git config --get remote.origin.url)
+if [ -z "$remote_url" ]; then
+  echo "ERROR: No remote repository found. Please set up a remote repository first."
+  exit 1
+fi
+
+if [[ "$remote_url" == *".git" ]]; then
+  remote_url="${remote_url%.git}"
+fi
+
+xdg-open "$remote_url" &>/dev/null
