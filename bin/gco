@@ -1,6 +1,28 @@
 #!/bin/bash
 #??Alias for 'git checkout'
 #&&git,mshx
-###Usage: gco <args>
+###Usage: gco <branch>
+###If no branch is specified, the script will ask for one interactively.
 
-git checkout $@
+if [ -n "$1" ]; then
+    git checkout $@
+    exit 0
+fi
+
+branches=$(git branch | sed 's/^[* ]*//')
+if [ -z "$branches" ]; then
+    echo "No branches found in the repository."
+    exit 1
+fi
+
+echo "Available branches:"
+select branch in $branches; do
+    if [ -n "$branch" ]; then
+        git checkout "$branch"
+        exit 0
+    else
+        echo "Invalid selection. Please try again."
+    fi
+done
+echo "No branches available to checkout."
+exit 1
