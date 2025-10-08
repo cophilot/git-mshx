@@ -1,0 +1,13 @@
+#!/bin/bash
+#??Stash changes, pull the current branch, and pop the stash
+#&&git,mshx
+###Usage: git-pull-stash
+
+git stash
+git pull
+git stash pop
+
+if [ $? -ne 0 ]; then
+    echo "Error popping stash"
+    exit 1
+fi
