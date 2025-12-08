@@ -11,6 +11,13 @@ fi
 BRANCH_NAME=$1
 OG_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
+# check if there are unstaged changes
+stash_needed=false
+if ! git diff-index --quiet HEAD --; then
+    git stash
+    stash_needed=true
+fi
+
 git checkout "$BRANCH_NAME"
 
 if [ $? -ne 0 ]; then
@@ -33,3 +40,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+if [ "$stash_needed" = true ]; then
+    git stash pop
+fi
