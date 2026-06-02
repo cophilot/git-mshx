@@ -9,7 +9,7 @@ if [ -n "$1" ]; then
     exit 0
 fi
 
-branches=$(git branch | sed 's/^[* ]*//')
+branches=$(git branch -a | sed 's/^[* ]*//')
 if [ -z "$branches" ]; then
     echo "No branches found in the repository."
     exit 1

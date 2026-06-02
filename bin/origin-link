@@ -1,0 +1,15 @@
+#!/bin/bash
+#??Show the origin link of the current repository
+#&&git,mshx
+###Usage: origin-link
+
+if [ ! -d ".git" ]; then
+    echo "Error: This is not a Git repository."
+    exit 1
+fi
+origin_url=$(git config --get remote.origin.url)
+if [ -z "$origin_url" ]; then
+    echo "Error: No origin remote found."
+    exit 1
+fi
+echo "Origin URL: $origin_url"
